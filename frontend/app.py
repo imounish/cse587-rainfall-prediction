@@ -44,40 +44,70 @@ wind_directions_encoding = {
 def main():
     st.title("Rainfall Prediction in Australia")
 
-    col1, col2 = st.columns(2)
+    temp_col1, temp_col2 = st.columns(2)
 
-    with col1:
+    with temp_col1:
         minTemp = st.number_input(
             "Minimum Temperature", min_value=-8.5, max_value=33.9, value=9.7
         )
 
-    with col2:
+    with temp_col2:
         maxTemp = st.number_input(
             "Maximum Temperature", min_value=-4.8, max_value=48.2, value=31.9
         )
 
     rainfall = st.number_input("Rainfall", min_value=0.0, max_value=371.0, value=0.0)
 
-    windGustDir = st.selectbox(
-        "Direction of Wind Gusts",
-        wind_directions,
-        index=1,
-        placeholder="Choose a direction",
+    evaporation = st.number_input(
+        "Evaporation", min_value=0.0, max_value=145.0, value=20.0
     )
 
-    windDir9am = st.selectbox(
-        "Direction of Wind at 9 AM",
-        wind_directions,
-        index=2,
-        placeholder="Choose a direction",
-    )
+    sunshine = st.number_input("Sunshine", min_value=0.0, max_value=14.5, value=10.0)
 
-    windDir3pm = st.selectbox(
-        "Direction of Wind at 3 PM",
-        wind_directions,
-        index=13,
-        placeholder="Choose a direction",
-    )
+    windGust_col1, windGust_col2 = st.columns(2)
+
+    with windGust_col1:
+        windGustDir = st.selectbox(
+            "Direction of Wind Gusts",
+            wind_directions,
+            index=1,
+            placeholder="Choose a direction",
+        )
+
+    with windGust_col2:
+        windGustSpeed = st.number_input(
+            "Speed of Wind Gusts", min_value=6.0, max_value=135.0, value=89.0
+        )
+
+    wind9am_col1, wind9am_col2 = st.columns(2)
+
+    with wind9am_col1:
+        windDir9am = st.selectbox(
+            "Direction of Wind at 9 AM",
+            wind_directions,
+            index=2,
+            placeholder="Choose a direction",
+        )
+
+    with wind9am_col2:
+        windSpeed9am = st.number_input(
+            "Speed of Wind at 9 AM", min_value=0.0, max_value=135.0, value=7.0
+        )
+
+    wind3pm_col1, wind3pm_col2 = st.columns(2)
+
+    with wind3pm_col1:
+        windDir3pm = st.selectbox(
+            "Direction of Wind at 3 PM",
+            wind_directions,
+            index=13,
+            placeholder="Choose a direction",
+        )
+
+    with wind3pm_col2:
+        windSpeed3pm = st.number_input(
+            "Speed of Wind at 3 PM", min_value=0.0, max_value=135.0, value=28.0
+        )
 
     if st.button("Predict"):
         input_data = {
@@ -85,14 +115,14 @@ def main():
                 "MinTemp": [str(minTemp)],
                 "MaxTemp": [str(maxTemp)],
                 "Rainfall": [str(rainfall)],
-                "Evaporation": ["20"],
-                "Sunshine": ["20"],
+                "Evaporation": [str(evaporation)],
+                "Sunshine": [str(sunshine)],
                 "WindGustDir": [wind_directions_encoding[windGustDir]],
-                "WindGustSpeed": ["89"],
+                "WindGustSpeed": [str(windGustSpeed)],
                 "WindDir9am": [wind_directions_encoding[windDir9am]],
                 "WindDir3pm": [wind_directions_encoding[windDir3pm]],
-                "WindSpeed9am": ["7"],
-                "WindSpeed3pm": ["28"],
+                "WindSpeed9am": [str(windSpeed9am)],
+                "WindSpeed3pm": [str(windSpeed3pm)],
                 "Humidity9am": ["42"],
                 "Humidity3pm": ["9"],
                 "Pressure9am": ["1008.9"],
@@ -104,14 +134,13 @@ def main():
                 "RainToday": ["0"],
             }
         }
-        price = requests.post(
-            url="http://127.0.0.1:8000/predict", data=json.dumps(input_data)
+
+        result = requests.post(
+            url=f"{st.secrets.backend.local.url}/{st.secrets.predict_path}",
+            data=json.dumps(input_data),
         )
-        rainfall = price.json()
-        print(rainfall)
-        # p = price["prediction"]
-        # st.success(f"The Price of the Car is {p} lacks")
-        # price("predict is called.")
+        rainfall = result.json()
+
         st.success(
             f"It will rain tomorrow"
             if rainfall["class"] == 1

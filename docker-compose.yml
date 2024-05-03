@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   backend:
     build: ./backend
@@ -8,3 +7,25 @@ services:
       - ./backend:/app
     environment:
       - CHOKIDAR_USEPOLLING=true
+    # restart: always
+    networks:
+      - app
+    container_name: backend
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./frontend:/app
+      - ./.streamlit:/app/.streamlit
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    # restart: always
+    networks:
+      - app
+    container_name: frontend
+
+networks:
+  app:
+    driver: bridge

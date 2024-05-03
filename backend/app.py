@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 import joblib
-import numpy as np
 import pandas as pd
 import logging
 
@@ -84,8 +83,10 @@ feature_ranges = {
     "Evaporation": (0.0, 145.0),
     "Sunshine": (0.0, 14.5),
     "WindGustSpeed": (6.0, 135.0),
-    "WindSpeed9am": (0.0, 130.0),
-    "WindSpeed3pm": (0.0, 87.0),
+    # "WindSpeed9am": (0.0, 130.0),
+    "WindSpeed9am": (0.0, 135.0),
+    # "WindSpeed3pm": (0.0, 87.0),
+    "WindSpeed3pm": (0.0, 135.0),
     "Humidity9am": (0.0, 100.0),
     "Humidity3pm": (0.0, 100.0),
     "Pressure9am": (980.5, 1041.0),
