@@ -89,11 +89,15 @@ feature_ranges = {
     "WindSpeed3pm": (0.0, 135.0),
     "Humidity9am": (0.0, 100.0),
     "Humidity3pm": (0.0, 100.0),
-    "Pressure9am": (980.5, 1041.0),
-    "Pressure3pm": (977.1, 1039.6),
+    # "Pressure9am": (980.5, 1041.0),
+    "Pressure9am": (977.0, 1041.0),
+    # "Pressure3pm": (977.1, 1039.6),
+    "Pressure3pm": (977.0, 1041.0),
     "Cloud9am": (0.0, 9.0),
     "Cloud3pm": (0.0, 9.0),
-    "Temp9am": (-7.2, 40.2),
+    # "Temp9am": (-7.2, 40.2),
+    "Temp9am": (-5.5, 46.7),
+    # "Temp3pm": (-5.4, 46.7),
     "Temp3pm": (-5.4, 46.7),
 }
 
