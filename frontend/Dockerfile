@@ -6,7 +6,7 @@ COPY . .
 
 # COPY ../.streamlit ./.streamlit
 
-RUN pip install streamlit requests
+RUN pip install streamlit requests pandas
 
 EXPOSE 8501
 
